@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
              $table->string('estado');
              $table->float('pontuacao')->default(0);
-
+              $table->boolean('concluido')->default(false);
+              
              $table->foreignId('crianca_id')
              ->constrained('criancas')
               ->onDelete('cascade');

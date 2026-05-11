@@ -15,4 +15,9 @@ class Subtema extends Model
     {
         return $this->belongsTo(Tema::class);
     }
+
+    public function niveis()
+{
+    return $this->hasMany(Nivel::class);
+}
 }

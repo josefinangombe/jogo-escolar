@@ -4,9 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Area;
 use App\Models\Tema;
 use App\Models\Subtema;
-
+use App\Models\Nivel;
+use App\Models\Atividade;
 
 class SubtemaSeeder extends Seeder
 {
@@ -48,11 +50,11 @@ class SubtemaSeeder extends Seeder
 
         $habitação = Tema::where('nome', 'A habitação')->first();
         $create($habitação, [
-            'Casa',
-            'Divisões da casa',
-            'Objetos da casa',
-            'Limpeza',
-            'Segurança em casa'
+            'Tipos de habitação',
+            'Compartimentos da casa',
+            'Mobiliário da casa',
+            'Tarefas domésticas',
+            'Materiais de construção'
         ]);
 
         $natureza = Tema::where('nome', 'A natureza e os seus elementos')->first();
@@ -69,7 +71,7 @@ class SubtemaSeeder extends Seeder
         // COMUNICAÇÃO LINGUÍSTICA
         // =========================
 
-        $criançaFam = Tema::where('nome', 'A criança e a família')->first();
+        $criançaFam = Tema::where('nome', 'A criança')->first();
         $create($criançaFam, [
             'Apresentação pessoal',
             'Nome próprio',
@@ -112,38 +114,38 @@ class SubtemaSeeder extends Seeder
 
         $criançaMat = Tema::where('nome', 'A criança')->first();
         $create($criançaMat, [
-            'Contar objetos',
-            'Reconhecer números',
-            'Comparação simples',
-            'Quantidades',
-            'Sequência numérica'
+            'Noções',
+            'Os conjuntos',
+            'Numeros naturais',
+            'Figuras geométricas',
+            'Aritmetica'
         ]);
 
         $familiaMat = Tema::where('nome', 'A família')->first();
         $create($familiaMat, [
-            'Membros da família (contagem)',
-            'Idades',
-            'Comparação de tamanhos',
-            'Agrupamento',
-            'Noções de quantidade'
+            'Noções',
+            'Os conjuntos',
+            'Numeros naturais',
+            'Figuras geométricas',
+            'Aritmetica'
         ]);
 
         $habMat = Tema::where('nome', 'A habitação')->first();
         $create($habMat, [
-            'Objetos da casa',
-            'Formas geométricas na casa',
-            'Grande e pequeno',
-            'Alto e baixo',
-            'Contagem de objetos'
+           'Noções',
+            'Os conjuntos',
+            'Numeros naturais',
+            'Figuras geométricas',
+            'Aritmetica'
         ]);
 
         $naturezaMat = Tema::where('nome', 'A natureza e os seus elementos')->first();
         $create($naturezaMat, [
-            'Animais (contagem)',
-            'Plantas (quantidade)',
-            'Elementos naturais',
-            'Classificação simples',
-            'Comparação'
+                'Noções',
+                'Os conjuntos',
+                'Numeros naturais',
+                'Figuras geométricas',
+                'Aritmetica'
         ]);
 
 
@@ -153,38 +155,38 @@ class SubtemaSeeder extends Seeder
 
         $criançaArte = Tema::where('nome', 'A criança')->first();
         $create($criançaArte, [
-            'Desenho livre',
-            'Auto-retrato',
-            'Cores básicas',
-            'Formas simples',
-            'Criatividade'
+            'Desenho',
+            'Pintura',
+            'Cores',
+             'Formas',
+            'Grafismo'
         ]);
 
         $familiaArte = Tema::where('nome', 'A família')->first();
         $create($familiaArte, [
-            'Desenho da família',
+           'Desenho',
+            'Pintura',
             'Cores',
-            'Figuras humanas',
-            'Recorte simples',
-            'Expressão artística'
+             'Formas',
+            'Grafismo'
         ]);
 
         $habArte = Tema::where('nome', 'A habitação')->first();
         $create($habArte, [
-            'Casa desenhada',
-            'Objetos da casa',
-            'Colagem',
+            'Desenho',
             'Pintura',
-            'Criatividade'
+            'Cores',
+             'Formas',
+            'Grafismo'
         ]);
 
         $naturezaArte = Tema::where('nome', 'A natureza e os seus elementos')->first();
         $create($naturezaArte, [
-            'Animais desenhados',
-            'Plantas',
-            'Cores da natureza',
-            'Pintura livre',
-            'Exploração artística'
+            'Desenho',
+            'Pintura',
+            'Cores',
+             'Formas',
+            'Grafismo'
         ]);
     
     }

@@ -13,11 +13,22 @@ return new class extends Migration
     {
         Schema::create('atividades', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo');
-            $table->foreignId('nivel_id')
-           ->constrained('niveis')
-           ->onDelete('cascade');
-            $table->timestamps();
+           $table->text('enunciado');
+
+    // tipos: escrita, desenho, pintura, audio, arrastar, escolha, traçado
+    $table->string('tipo_interacao');
+
+    // dados flexíveis (opções, imagens, coordenadas, etc.)
+    $table->json('dados')->nullable();
+
+    // resposta esperada (pode ser texto, opção, etc.)
+    $table->text('resposta_correta')->nullable();
+
+    $table->foreignId('nivel_id')
+        ->constrained('niveis')
+        ->onDelete('cascade');
+
+    $table->timestamps();
         });
     }
 

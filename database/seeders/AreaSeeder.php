@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Area;
+use App\Models\Tema;
+use App\Models\Subtema;
+use App\Models\Nivel;
+use App\Models\Atividade;
 class AreaSeeder extends Seeder
 {
     /**

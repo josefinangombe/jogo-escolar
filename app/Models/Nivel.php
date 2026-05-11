@@ -12,12 +12,12 @@ class Nivel extends Model
         'dificuldade',
         'idade_min',
         'idade_max',
-        'tema_id'
+        'subtema_id'
     ];
 
-    public function tema()
+    public function subtema()
     {
-        return $this->belongsTo(Tema::class);
+        return $this->belongsTo(Subtema::class);
     }
 
     public function atividades()

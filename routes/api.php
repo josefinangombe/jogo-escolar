@@ -11,7 +11,7 @@ use App\Http\Controllers\SubtemaController;
 
 Route::get('/areas', [AreaController::class, 'index']);
 Route::get('/temas/{area}', [TemaController::class, 'porArea']);
-Route::get('/niveis/{tema}', [NivelController::class, 'porTema']);
+Route::get('/niveis/{subtema}', [NivelController::class, 'porSubtema']);
 Route::get('/atividades/{nivel}', [AtividadeController::class, 'porNivel']);
 
 Route::post('/progresso', [ProgressoController::class, 'store']);

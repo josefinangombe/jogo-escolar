@@ -6,6 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Area;
 use App\Models\Tema;
+use App\Models\Subtema;
+use App\Models\Nivel;
+use App\Models\Atividade;
 
 
 class TemaSeeder extends Seeder
@@ -20,7 +23,7 @@ class TemaSeeder extends Seeder
 
         $mfs = Area::where('nome', 'Meio Fisico e Social')->first();
 
-        Tema::create(['nome' => 'A criança ', 'area_id' => $mfs->id]);
+        Tema::create(['nome' => 'A criança', 'area_id' => $mfs->id]);
         Tema::create(['nome' => 'A família', 'area_id' => $mfs->id]);
         Tema::create(['nome' => 'A habitação', 'area_id' => $mfs->id]);
         Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $mfs->id]);
@@ -30,7 +33,7 @@ class TemaSeeder extends Seeder
         // =========================
         $lingua = Area::where('nome', 'Comunicação Linguistica')->first();
 
-        Tema::create(['nome' => 'A criança e a família', 'area_id' => $lingua->id]);
+        Tema::create(['nome' => 'A criança', 'area_id' => $lingua->id]);
         Tema::create(['nome' => 'A habitação', 'area_id' => $lingua->id]);
         Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $lingua->id]);
         Tema::create(['nome' => 'A pré-escrita, a escrita e a leitura', 'area_id' => $lingua->id]);

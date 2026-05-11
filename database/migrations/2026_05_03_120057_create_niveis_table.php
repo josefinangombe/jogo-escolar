@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('niveis', function (Blueprint $table) {
             $table->id();
-            $table->string('dificuldade');
-            $table->integer('idade_min');
-            $table->integer('idade_max');
-            $table->foreignId('tema_id')
-            ->constrained('temas')
-            ->onDelete('cascade');
+             $table->string('nome'); 
+
+            $table->integer('idade_min')->nullable();
+            $table->integer('idade_max')->nullable();
+
+            $table->foreignId('subtema_id')
+                ->constrained('subtemas')
+                ->onDelete('cascade');
+
             $table->timestamps();
+        
         });
     }
 
