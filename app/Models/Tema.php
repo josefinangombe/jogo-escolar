@@ -10,7 +10,8 @@ class Tema extends Model
 
     protected $fillable = [
         'nome',
-        'area_id'
+        'area_id',
+        'imagem'
     ];
 
     public function area()
@@ -19,9 +20,9 @@ class Tema extends Model
     }
 
     public function subtemas()
-   {
-    return $this->hasMany(Subtema::class);
-   }
+    {
+        return $this->hasMany(Subtema::class);
+    }
 
     public function niveis()
     {

@@ -2,21 +2,30 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Area;
 use App\Models\Tema;
 use App\Models\Subtema;
 use App\Models\Nivel;
-use App\Models\Atividade;
+
 class NivelSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-         $createSubtema = function ($tema, $subtemas) {
+        $temas = Tema::with('area')->get();
+
+        // 🔍 encontrar tema de forma segura
+        $findTema = function ($nome, $areaNome) use ($temas) {
+            return $temas->first(function ($tema) use ($nome, $areaNome) {
+                return $tema->nome === $nome &&
+                       $tema->area->nome === $areaNome;
+            });
+        };
+
+        $createSubtema = function ($tema, $subtemas, $label) {
+
+            if (!$tema) {
+                throw new \Exception("Tema '{$label}' não encontrado.");
+            }
 
             foreach ($subtemas as $nomeSubtema) {
 
@@ -25,114 +34,133 @@ class NivelSeeder extends Seeder
                     'tema_id' => $tema->id
                 ]);
 
-                
                 for ($i = 1; $i <= 6; $i++) {
                     Nivel::create([
-                        'nome' => "Nível $i",
+                        'nome' => "Nível {$i}",
                         'subtema_id' => $subtema->id
                     ]);
                 }
             }
         };
 
-        // =========================
-        // Meio Físico e Social
-        // =========================
+        /*
+        =========================
+        🌿 NATUREZA
+        =========================
+        */
 
-        $criança = Tema::where('nome', 'A criança')->first();
-        $createSubtema($criança, [
-            'Partes do corpo',
-            'Órgãos dos sentidos',
-            'Higiene pessoal',
-            'Gostos e preferências',
-            'Direitos e deveres'
-        ]);
+        $createSubtema(
+            $findTema('A criança', 'Natureza'),
+            [
+                'Partes do corpo',
+                'Órgãos dos sentidos',
+                'Higiene pessoal',
+                'Gostos e preferências',
+                'Direitos e deveres'
+            ],
+            'A criança - Natureza'
+        );
 
-        $familia = Tema::where('nome', 'A família')->first();
-        $createSubtema($familia, [
-            'Membros da família',
-            'Família restrita',
-            'Família alargada',
-            'Funções familiares',
-            'Importância da família'
-        ]);
+        $createSubtema(
+            $findTema('A família', 'Natureza'),
+            [
+                'Membros da família',
+                'Família restrita',
+                'Família alargada',
+                'Funções familiares',
+                'Importância da família'
+            ],
+            'A família - Natureza'
+        );
 
-        $habitação = Tema::where('nome', 'A habitação')->first();
-        $createSubtema($habitação, [
-            'Tipos de habitação',
-            'Compartimentos da casa',
-            'Mobiliário',
-            'Tarefas domésticas',
-            'Materiais de construção'
-        ]);
+        $createSubtema(
+            $findTema('Os animais', 'Natureza'),
+            [
+                'Animais domésticos',
+                'Animais selvagens',
+                'Alimentação',
+                'Habitat',
+                'Cuidados com animais'
+            ],
+            'Animais - Natureza'
+        );
 
-        $natureza = Tema::where('nome', 'A natureza e os seus elementos')->first();
-        $createSubtema($natureza, [
-            'Animais',
-            'Plantas',
-            'Água',
-            'Sol e chuva',
-            'Cuidado com o ambiente'
-        ]);
+        /*
+        =========================
+        📘 PORTUGUÊS
+        =========================
+        */
 
+        $createSubtema(
+            $findTema('Escrita', 'Português'),
+            [
+                'Alfabeto',
+                'Palavras',
+                'Frases',
+                'Ortografia',
+                'Produção textual'
+            ],
+            'Escrita - Português'
+        );
 
-        // =========================
-        //  Comunicação Linguística
-        // =========================
+        $createSubtema(
+            $findTema('Leitura', 'Português'),
+            [
+                'Leitura de palavras',
+                'Leitura de frases',
+                'Interpretação',
+                'Compreensão',
+                'Expressão oral'
+            ],
+            'Leitura - Português'
+        );
 
-        $criançaFam = Tema::where('nome', 'A criança e a família')->first();
+        /*
+        =========================
+        ➗ MATEMÁTICA
+        =========================
+        */
 
-        if ($criançaFam) {
-            $createSubtema($criançaFam, [
-                'Apresentação pessoal',
-                'Nome próprio',
-                'Diálogo simples',
-                'Expressão oral',
-                'Interação social'
-            ]);
-        }
+        $createSubtema(
+            $findTema('Números', 'Matemática'),
+            [
+                'Contagem',
+                'Soma',
+                'Subtração',
+                'Multiplicação',
+                'Problemas'
+            ],
+            'Números - Matemática'
+        );
 
-        $preEscrita = Tema::where('nome', 'A pré-escrita, a escrita e a leitura')->first();
+        $createSubtema(
+            $findTema('Figuras Geométricas', 'Matemática'),
+            [
+                'Círculo',
+                'Quadrado',
+                'Triângulo',
+                'Retângulo',
+                'Formas no dia a dia'
+            ],
+            'Geometria - Matemática'
+        );
 
-        if ($preEscrita) {
-            $createSubtema($preEscrita, [
-                'Letras do alfabeto',
-                'Sons das letras',
-                'Traços e linhas',
-                'Escrita do nome',
-                'Leitura de imagens'
-            ]);
-        }
+        /*
+        =========================
+        🎨 PLÁSTICA
+        =========================
+        */
 
-
-        // =========================
-        // Representação Matemática
-        // =========================
-
-        $mat = Tema::where('nome', 'A criança')->first();
-
-        $createSubtema($mat, [
-            'Noções básicas',
-            'Conjuntos',
-            'Números naturais',
-            'Figuras geométricas',
-            'Aritmética'
-        ]);
-
-
-        // =========================
-        // Expressão Plástica
-        // =========================
-
-        $arte = Tema::where('nome', 'A criança')->first();
-
-        $createSubtema($arte, [
-            'Desenho',
-            'Pintura',
-            'Cores',
-            'Formas',
-            'Grafismo'
-        ]);
+        $createSubtema(
+            $findTema('Desenho', 'Plástica'),
+            [
+                'Desenho livre',
+                'Formas',
+                'Cores',
+                'Criatividade',
+                'Expressão artística'
+            ],
+            'Desenho - Plástica'
+        );
     }
 }
-

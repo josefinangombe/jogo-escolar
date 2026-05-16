@@ -9,7 +9,8 @@ class Area extends Model
      protected $table = 'areas';
 
     protected $fillable = [
-        'nome'
+        'nome',
+        'imagem'
     ];
 
     public function temas()

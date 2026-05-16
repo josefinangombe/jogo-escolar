@@ -2,61 +2,78 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\Area;
 use App\Models\Tema;
 use App\Models\Subtema;
 use App\Models\Nivel;
 use App\Models\Atividade;
-
+use App\Models\Progresso;
 
 class TemaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        
-        // MEIO FÍSICO E SOCIAL
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $mfs = Area::where('nome', 'Meio Fisico e Social')->first();
+        Progresso::truncate();
+        Atividade::truncate();
+        Nivel::truncate();
+        Subtema::truncate();
+        Tema::truncate();
 
-        Tema::create(['nome' => 'A criança', 'area_id' => $mfs->id]);
-        Tema::create(['nome' => 'A família', 'area_id' => $mfs->id]);
-        Tema::create(['nome' => 'A habitação', 'area_id' => $mfs->id]);
-        Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $mfs->id]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // =========================
-        // COMUNICAÇÃO LINGUÍSTICA
-        // =========================
-        $lingua = Area::where('nome', 'Comunicação Linguistica')->first();
+        // 🔥 TEMAS POR ÁREA (DIFERENTES)
+        $temasPorArea = [
+            'Natureza' => [
+                ['nome' => 'A criança', 'imagem' => 'crianca.png'],
+                ['nome' => 'A família', 'imagem' => 'familia.png'],
+                ['nome' => 'Os animais', 'imagem' => 'animais.png'],
+                ['nome' => 'As plantas', 'imagem' => 'plantas.png'],
+            ],
 
-        Tema::create(['nome' => 'A criança', 'area_id' => $lingua->id]);
-        Tema::create(['nome' => 'A habitação', 'area_id' => $lingua->id]);
-        Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $lingua->id]);
-        Tema::create(['nome' => 'A pré-escrita, a escrita e a leitura', 'area_id' => $lingua->id]);
+            'Português' => [
+                ['nome' => 'Escrita', 'imagem' => 'escrita.png'],
+                ['nome' => 'Leitura', 'imagem' => 'leitura.png'],
+                ['nome' => 'Grafismo', 'imagem' => 'grafismo.png'],
+                ['nome' => 'Compreensão', 'imagem' => 'compreensao.png'],
+            ],
 
-        // =========================
-        // REPRESENTAÇÃO MATEMÁTICA
-        // =========================
-        $mat = Area::where('nome', 'Representação Matemática')->first();
+            'Matemática' => [
+                ['nome' => 'Noções', 'imagem' => 'nocoes.png'],
+                ['nome' => 'Números', 'imagem' => 'numeros.png'],
+                ['nome' => 'Figuras Geométricas', 'imagem' => 'geometria.png'],
+                ['nome' => 'Conjuntos', 'imagem' => 'conjuntos.png'],
+            ],
 
-        Tema::create(['nome' => 'A criança', 'area_id' => $mat->id]);
-        Tema::create(['nome' => 'A família', 'area_id' => $mat->id]);
-        Tema::create(['nome' => 'A habitação', 'area_id' => $mat->id]);
-        Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $mat->id]);
+            'Plástica' => [
+                ['nome' => 'Desenho', 'imagem' => 'desenho.png'],
+                ['nome' => 'Pintura', 'imagem' => 'pintura.png'],
+                ['nome' => 'Recorte', 'imagem' => 'recorte.png'],
+                ['nome' => 'Criatividade', 'imagem' => 'criatividade.png'],
+            ],
+        ];
 
-        // =========================
-        // EXPRESSÃO PLÁSTICA
-        // =========================
-        $arte = Area::where('nome', 'Expressão Plástica')->first();
+        // 🔍 buscar áreas
+        $areas = Area::all()->keyBy('nome');
 
-        Tema::create(['nome' => 'A criança', 'area_id' => $arte->id]);
-        Tema::create(['nome' => 'A família', 'area_id' => $arte->id]);
-        Tema::create(['nome' => 'A habitação', 'area_id' => $arte->id]);
-        Tema::create(['nome' => 'A natureza e os seus elementos', 'area_id' => $arte->id]);
-    
+        foreach ($temasPorArea as $areaNome => $temas) {
+
+            if (!isset($areas[$areaNome])) {
+                continue;
+            }
+
+            $area = $areas[$areaNome];
+
+            foreach ($temas as $tema) {
+                Tema::create([
+                    'nome' => $tema['nome'],
+                    'imagem' => $tema['imagem'],
+                    'area_id' => $area->id,
+                ]);
+            }
+        }
     }
 }
