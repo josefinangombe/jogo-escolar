@@ -11,21 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('progressos', function (Blueprint $table) {
-            $table->id();
-             $table->string('estado');
-             $table->float('pontuacao')->default(0);
-              $table->boolean('concluido')->default(false);
-              
-             $table->foreignId('crianca_id')
-             ->constrained('criancas')
-              ->onDelete('cascade');
+       Schema::create('progressos', function (Blueprint $table) {
+    $table->id();
 
-             $table->foreignId('atividade_id')
-             ->constrained('atividades')
-             ->onDelete('cascade');
-              $table->timestamps();
-        });
+    $table->enum('estado', ['iniciado', 'em_progresso', 'concluido'])->default('iniciado');
+
+    $table->float('pontuacao')->default(0);
+
+    $table->boolean('concluido')->default(false);
+
+    $table->foreignId('nivel_id')
+        ->constrained('niveis')
+        ->onDelete('cascade');
+
+    $table->foreignId('crianca_id')
+        ->constrained('criancas')
+        ->onDelete('cascade');
+
+    $table->timestamps();
+});
     }
 
     /**

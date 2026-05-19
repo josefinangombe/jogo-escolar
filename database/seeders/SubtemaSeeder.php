@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Tema;
 use App\Models\Subtema;
+use App\Models\Nivel;
 
 class SubtemaSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class SubtemaSeeder extends Seeder
     {
         $temas = Tema::with('area')->get();
 
-        // 🔍 função segura para encontrar tema por nome + área
+        // 🔍 encontrar tema por nome + área
         $findTema = function ($nome, $areaNome) use ($temas) {
             return $temas->first(function ($tema) use ($nome, $areaNome) {
                 return $tema->nome === $nome &&
@@ -20,16 +21,38 @@ class SubtemaSeeder extends Seeder
             });
         };
 
+        // 🎮 cria subtema + níveis
         $create = function ($tema, $subtemas, $label) {
+
             if (!$tema) {
                 throw new \Exception("Tema '{$label}' não encontrado.");
             }
 
             foreach ($subtemas as $nome) {
-                Subtema::create([
+
+                // 🧩 CRIAR SUBTEMA
+                $subtema = Subtema::create([
                     'nome' => $nome,
                     'tema_id' => $tema->id
                 ]);
+
+                // 🎮 CRIAR 4 NÍVEIS POR SUBTEMA (MAPA RPG)
+                for ($i = 1; $i <= 4; $i++) {
+
+                    $niveisNomes = [
+                        1 => 'Introdução',
+                        2 => 'Prática',
+                        3 => 'Desafio',
+                        4 => 'Missão final'
+                    ];
+
+                    Nivel::create([
+                        'nome' => $niveisNomes[$i] . ' - ' . $nome,
+                        'ordem' => $i,
+                        'subtema_id' => $subtema->id,
+                        'desbloqueado' => $i === 1 // só o primeiro começa desbloqueado
+                    ]);
+                }
             }
         };
 
@@ -98,7 +121,7 @@ class SubtemaSeeder extends Seeder
             'Coordenação motora',
             'Escrita de letras',
             'Desenho de formas',
-            'Pre-escrita'
+            'Pré-escrita'
         ], 'Grafismo - Português');
 
         $create($findTema('Compreensão', 'Português'), [
@@ -125,8 +148,8 @@ class SubtemaSeeder extends Seeder
 
         $create($findTema('Números', 'Matemática'), [
             'Contagem',
+            'Números de 1 a 5',
             'Números de 1 a 10',
-            'Números de 1 a 100',
             'Escrita de números',
             'Comparação de números'
         ], 'Números - Matemática');

@@ -10,10 +10,18 @@ use App\Http\Controllers\ProgressoController;
 use App\Http\Controllers\SubtemaController;
 
 Route::get('/areas', [AreaController::class, 'index']);
+
 Route::get('/temas', [TemaController::class, 'index']);
 Route::get('/temas/{area}', [TemaController::class, 'porArea']);
+
+Route::get('/subtemas/{tema}', [SubtemaController::class, 'porTema']);
+
 Route::get('/niveis/{subtema}', [NivelController::class, 'porSubtema']);
+
 Route::get('/atividades/{nivel}', [AtividadeController::class, 'porNivel']);
 
 Route::post('/progresso', [ProgressoController::class, 'store']);
-Route::get('/subtemas/{tema}', [SubtemaController::class, 'porTema']);
+
+Route::get('/progresso/{crianca}', [ProgressoController::class, 'progressoCrianca']);
+
+Route::post('/progresso/verificar', [ProgressoController::class, 'verificarNivel']);

@@ -6,35 +6,41 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('atividades', function (Blueprint $table) {
+
             $table->id();
-           $table->text('enunciado');
 
-    // tipos: escrita, desenho, pintura, audio, arrastar, escolha, traçado
-    $table->string('tipo_interacao');
+            $table->text('enunciado');
 
-    // dados flexíveis (opções, imagens, coordenadas, etc.)
-    $table->json('dados')->nullable();
+            // 🎮 tipo de atividade
+            $table->string('tipo_interacao');
 
-    // resposta esperada (pode ser texto, opção, etc.)
-    $table->text('resposta_correta')->nullable();
+            // ✍️ escrita pedagógica (copiar / traçar / livre)
+            $table->string('modo_escrita')->nullable();
 
-    $table->foreignId('nivel_id')
-        ->constrained('niveis')
-        ->onDelete('cascade');
+            // 🧠 dados flexíveis (opções, imagens, etc.)
+            $table->json('dados')->nullable();
 
-    $table->timestamps();
+            // 🎯 resposta correta
+            $table->text('resposta_correta')->nullable();
+
+            // 🖼️ imagem principal da atividade (IMPORTANTE para RPG)
+            $table->string('imagem')->nullable();
+
+            // 🔊 áudio (para atividades de falar)
+            $table->string('audio')->nullable();
+
+            // 🔗 relação com nível
+            $table->foreignId('nivel_id')
+                ->constrained('niveis')
+                ->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('atividades');

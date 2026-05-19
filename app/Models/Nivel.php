@@ -9,10 +9,14 @@ class Nivel extends Model
     protected $table = 'niveis';
 
     protected $fillable = [
-        'dificuldade',
-        'idade_min',
-        'idade_max',
-        'subtema_id'
+        'nome',
+        'ordem',
+        'subtema_id',
+        'desbloqueado'
+    ];
+
+    protected $casts = [
+        'desbloqueado' => 'boolean'
     ];
 
     public function subtema()
