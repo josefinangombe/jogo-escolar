@@ -46,8 +46,10 @@ class SubtemaController extends Controller
         return Subtema::destroy($id);
     }
 
-     public function porTema($temaId)
+    // 🔥 LISTAR SUBTEMAS POR TEMA (Ajustado para a nova rota)
+    public function porTema($temaId)
     {
+        // Como o Laravel já não confunde com o ID do subtema, esta consulta vai direta e limpa!
         return Subtema::where('tema_id', $temaId)->get();
     }
 }

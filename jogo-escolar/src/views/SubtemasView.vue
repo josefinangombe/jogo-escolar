@@ -7,7 +7,6 @@
       class="subtema-block"
     >
 
-      <!-- 🟦 HEADER -->
       <div
         class="header"
         :style="{ background: subtema.color }"
@@ -15,7 +14,6 @@
         <h2>{{ subtema.nome }}</h2>
       </div>
 
-      <!-- 🎮 NÍVEIS -->
       <div class="map">
 
         <div
@@ -25,10 +23,8 @@
           @click="openNivel(subtema, nivel)"
         >
 
-          <!-- linha -->
           <div v-if="index !== 0" class="line"></div>
 
-          <!-- círculo -->
           <div
             class="circle"
             :style="getNivelStyle(nivel)"
@@ -66,23 +62,35 @@ const colors = [
   "#ff4b4b"
 ]
 
+/* 📦 carregar dados */
 onMounted(async () => {
   try {
-    const res = await api.get(`/subtemas/${route.params.temaId}`)
+    const temaId = route.params.temaId
+
+    // 🔥 ALTERADO: Rota corrigida para o novo padrão REST do Laravel 11
+    const res = await api.get(`/temas/${temaId}/subtemas`)
+
+    // Variável de controlo para ajudar a desbloquear os níveis em cadeia
+    let ultimoNivelConcluido = true
 
     subtemas.value = await Promise.all(
       res.data.map(async (s, sIndex) => {
 
         const niveisRes = await api.get(`/niveis/${s.id}`)
 
-        // 🔥 só o primeiro subtema começa desbloqueado
-        const subtemaAtivo = sIndex === 0
-
         const niveis = niveisRes.data.map((n, i) => {
+          // Verifica se este nível específico foi salvo no navegador como concluído
+          const estaConcluido = localStorage.getItem(`nivel_${n.id}_concluido`) === 'true'
+          
+          // Regra de Desbloqueio: O nível está livre se for o primeiríssimo ou se o anterior terminou
+          const locked = !ultimoNivelConcluido
+
+          // Atualiza o estado para o próximo nível da lista ler
+          ultimoNivelConcluido = estaConcluido
+
           return {
             ...n,
-            // 🔒 lógica correta:
-            locked: !(subtemaAtivo && i === 0)
+            locked: locked // Define dinamicamente se exibe o cadeado
           }
         })
 
@@ -99,6 +107,7 @@ onMounted(async () => {
   }
 })
 
+/* 🎨 estilo nível */
 function getNivelStyle(nivel) {
   if (nivel.locked) {
     return {
@@ -114,14 +123,20 @@ function getNivelStyle(nivel) {
   }
 }
 
+/* 🎮 abrir nível */
 function openNivel(subtema, nivel) {
   if (nivel.locked) return
-  router.push(`/atividades/${nivel.id}`)
+
+  router.push({
+    path: `/atividades/${nivel.id}`,
+    query: {
+      subtemaId: subtema.id
+    }
+  })
 }
 </script>
 
 <style scoped>
-
 .page {
   min-height: 100vh;
   padding-bottom: 40px;
@@ -186,5 +201,4 @@ function openNivel(subtema, nivel) {
   transform: translateX(-50%);
   border-radius: 3px;
 }
-
 </style>

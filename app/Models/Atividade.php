@@ -19,9 +19,10 @@ class Atividade extends Model
         'nivel_id'
     ];
 
-    // 🧠 importante para Vue e JSON
+    // ✅ CORRETO: cast completo
     protected $casts = [
         'dados' => 'array',
+        'resposta_correta' => 'array',
     ];
 
     public function nivel()
