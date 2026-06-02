@@ -4,49 +4,52 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Progresso;
+use App\Models\Nivel; 
 
 class ProgressoController extends Controller
 {
     /**
      * 🔥 MARCAR NÍVEL COMO CONCLUÍDO
      */
-    use App\Models\Nivel;
+    public function store(Request $request)
+    {
+        // 🔍 LINHA TEMPORÁRIA PARA DEBUG:
+        // Força o Laravel a responder um erro 500 amigável contendo os dados recebidos.
+        return response()->json(['dados_recebidos' => $request->all()], 500);
 
-public function store(Request $request)
-{
-    $request->validate([
-        'crianca_id' => 'required|integer',
-        'nivel_id' => 'required|integer',
-        'pontuacao' => 'nullable|numeric'
-    ]);
+        $request->validate([
+            'crianca_id' => 'required|integer',
+            'nivel_id' => 'required|integer',
+            'pontuacao' => 'nullable|numeric'
+        ]);
 
-    // 1. salvar progresso
-    $progresso = Progresso::updateOrCreate(
-        [
-            'crianca_id' => $request->crianca_id,
-            'nivel_id' => $request->nivel_id
-        ],
-        [
-            'estado' => 'concluido',
-            'pontuacao' => $request->pontuacao ?? 0,
-            'concluido' => true
-        ]
-    );
+        // 1. salvar progresso
+        $progresso = Progresso::updateOrCreate(
+            [
+                'crianca_id' => $request->crianca_id,
+                'nivel_id' => $request->nivel_id
+            ],
+            [
+                'estado' => 'concluido',
+                'pontuacao' => $request->pontuacao ?? 0,
+                'concluido' => true
+            ]
+        );
 
-    // 2. 🔓 DESBLOQUEIO (AQUI É O IMPORTANTE)
-    $nivelAtual = Nivel::find($request->nivel_id);
+        // 2. 🔓 DESBLOQUEIO (AQUI É O IMPORTANTE)
+        $nivelAtual = Nivel::find($request->nivel_id);
 
-    $proximoNivel = Nivel::where('subtema_id', $nivelAtual->subtema_id)
-        ->where('id', '>', $nivelAtual->id)
-        ->orderBy('id')
-        ->first();
+        $proximoNivel = Nivel::where('subtema_id', $nivelAtual->subtema_id)
+            ->where('id', '>', $nivelAtual->id)
+            ->orderBy('id')
+            ->first();
 
-    return response()->json([
-        'message' => 'Nível concluído com sucesso',
-        'progresso' => $progresso,
-        'proximo_nivel_desbloqueado' => $proximoNivel
-    ]);
-}
+        return response()->json([
+            'message' => 'Nível concluído com sucesso',
+            'progresso' => $progresso,
+            'proximo_nivel_desbloqueado' => $proximoNivel
+        ]);
+    }
 
     /**
      * 📊 BUSCAR PROGRESSO DE UMA CRIANÇA

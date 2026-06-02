@@ -18,6 +18,8 @@ class AtividadeSeeder extends Seeder
                 Atividade::create([
                     'enunciado' => $item['enunciado'],
                     'tipo_interacao' => $item['tipo'],
+                    'modo_escrita' => $item['modo_escrita'] ?? null,
+                    'imagem' => $item['imagem'] ?? null,
                     'dados' => $item['dados'] ?? null,
                     'resposta_correta' => $item['resposta'] ?? null,
                     'nivel_id' => $nivel->id
@@ -27,7 +29,7 @@ class AtividadeSeeder extends Seeder
 
         /*
         =====================================================
-        🌿 NATUREZA - A CRIANÇA
+        🌿 PARTES DO CORPO
         =====================================================
         */
 
@@ -35,45 +37,65 @@ class AtividadeSeeder extends Seeder
 
         if ($subtema) {
 
-            $niveis = Nivel::where('subtema_id', $subtema->id)->orderBy('ordem')->get();
+            $niveis = Nivel::where('subtema_id', $subtema->id)
+                ->orderBy('ordem')
+                ->get();
 
             foreach ($niveis as $nivel) {
 
                 $create($nivel, [
+
                     [
-                        'enunciado' => 'Seleciona a parte do corpo correta',
+                        'enunciado' => 'Toca na imagem da cabeça',
                         'tipo' => 'multipla_escolha',
+                        'imagem' => 'corpo/corpo.png',
                         'dados' => [
-                            'imagem' => 'corpo.png',
-                            'opcoes' => ['Cabeça', 'Braço', 'Perna']
+                            'opcoes' => [
+                                [
+                                    'nome' => 'Cabeça',
+                                    'imagem' => 'corpo/cabeca.png'
+                                ],
+                                [
+                                    'nome' => 'Braço',
+                                    'imagem' => 'corpo/braco.png'
+                                ],
+                                [
+                                    'nome' => 'Perna',
+                                    'imagem' => 'corpo/perna.png'
+                                ]
+                            ]
                         ],
                         'resposta' => 'Cabeça'
                     ],
+
+                    // ✅ PINTURA GENÉRICA (NOVO MODELO)
                     [
-                        'enunciado' => 'Copia o nome: CABEÇA',
-                        'tipo' => 'escrita',
+                        'enunciado' => 'Pinta os braços da criança',
+                        'tipo' => 'pintar',
+                        'imagem' => 'corpo/bracos.png',
                         'dados' => [
-                            'modo_escrita' => 'copiar',
-                            'imagem_modelo' => 'cabeca.png'
+                            'mask' => 'corpo/bracos_mask.png',
+                            'zona_alvo' => 'bracos'
                         ],
-                        'resposta' => 'CABEÇA'
+                        'resposta' => 'bracos'
                     ],
+
                     [
-                        'enunciado' => 'Traça a palavra CABEÇA',
+                        'enunciado' => 'Passa por cima da mão',
                         'tipo' => 'tracado',
-                        'dados' => [
-                            'imagem_tracejada' => 'cabeca_tracejada.png'
-                        ],
-                        'resposta' => 'CABEÇA'
+                        'imagem' => 'mao_tracejada.png',
+                        'dados' => [],
+                        'resposta' => 'MÃO'
                     ],
+
                     [
                         'enunciado' => 'Diz o nome da imagem',
                         'tipo' => 'falar',
+                        'imagem' => 'corpo/tronco.png',
                         'dados' => [
-                            'imagem' => 'olho.png',
-                            'audio_texto' => 'Diz: olho'
+                            'audio_texto' => 'Diz: tronco'
                         ],
-                        'resposta' => 'olho'
+                        'resposta' => 'tronco'
                     ]
                 ]);
             }
@@ -81,7 +103,7 @@ class AtividadeSeeder extends Seeder
 
         /*
         =====================================================
-        🌿 NATUREZA - A FAMÍLIA
+        🌿 FAMÍLIA
         =====================================================
         */
 
@@ -89,42 +111,60 @@ class AtividadeSeeder extends Seeder
 
         if ($subtema) {
 
-            $niveis = Nivel::where('subtema_id', $subtema->id)->orderBy('ordem')->get();
+            $niveis = Nivel::where('subtema_id', $subtema->id)
+                ->orderBy('ordem')
+                ->get();
 
             foreach ($niveis as $nivel) {
 
                 $create($nivel, [
+
                     [
-                        'enunciado' => 'Seleciona quem faz parte da família',
+                        'enunciado' => 'Toca na imagem da mãe',
                         'tipo' => 'multipla_escolha',
+                        'imagem' => 'familia.png',
                         'dados' => [
-                            'imagem' => 'familia.png',
-                            'opcoes' => ['Mãe', 'Árvore', 'Carro']
+                            'opcoes' => [
+                                [
+                                    'nome' => 'Mãe',
+                                    'imagem' => 'familia/mae.png'
+                                ],
+                                [
+                                    'nome' => 'Árvore',
+                                    'imagem' => 'familia/arvore.png'
+                                ],
+                                [
+                                    'nome' => 'Carro',
+                                    'imagem' => 'familia/carro.png'
+                                ]
+                            ]
                         ],
                         'resposta' => 'Mãe'
                     ],
+
                     [
                         'enunciado' => 'Copia a palavra: MÃE',
                         'tipo' => 'escrita',
+                        'imagem' => 'mae.png',
                         'dados' => [
-                            'modo_escrita' => 'copiar',
-                            'imagem_modelo' => 'mae.png'
+                            'modo_escrita' => 'copiar'
                         ],
                         'resposta' => 'MÃE'
                     ],
+
                     [
                         'enunciado' => 'Traça a palavra PAI',
                         'tipo' => 'tracado',
-                        'dados' => [
-                            'imagem_tracejada' => 'pai.png'
-                        ],
+                        'imagem' => 'pai.png',
+                        'dados' => [],
                         'resposta' => 'PAI'
                     ],
+
                     [
                         'enunciado' => 'Diz quem aparece na imagem',
                         'tipo' => 'falar',
+                        'imagem' => 'familia2.png',
                         'dados' => [
-                            'imagem' => 'familia2.png',
                             'audio_texto' => 'Diz: família'
                         ],
                         'resposta' => 'família'
@@ -135,7 +175,7 @@ class AtividadeSeeder extends Seeder
 
         /*
         =====================================================
-        🌿 NATUREZA - ANIMAIS
+        🌿 ANIMAIS
         =====================================================
         */
 
@@ -143,42 +183,60 @@ class AtividadeSeeder extends Seeder
 
         if ($subtema) {
 
-            $niveis = Nivel::where('subtema_id', $subtema->id)->orderBy('ordem')->get();
+            $niveis = Nivel::where('subtema_id', $subtema->id)
+                ->orderBy('ordem')
+                ->get();
 
             foreach ($niveis as $nivel) {
 
                 $create($nivel, [
+
                     [
-                        'enunciado' => 'Seleciona o animal doméstico',
+                        'enunciado' => 'Toca na imagem do cão',
                         'tipo' => 'multipla_escolha',
+                        'imagem' => 'animais.png',
                         'dados' => [
-                            'imagem' => 'animais.png',
-                            'opcoes' => ['Cão', 'Leão', 'Tigre']
+                            'opcoes' => [
+                                [
+                                    'nome' => 'Cão',
+                                    'imagem' => 'animais/cao.png'
+                                ],
+                                [
+                                    'nome' => 'Leão',
+                                    'imagem' => 'animais/leao.png'
+                                ],
+                                [
+                                    'nome' => 'Tigre',
+                                    'imagem' => 'animais/tigre.png'
+                                ]
+                            ]
                         ],
                         'resposta' => 'Cão'
                     ],
+
                     [
                         'enunciado' => 'Copia: CÃO',
                         'tipo' => 'escrita',
+                        'imagem' => 'cao.png',
                         'dados' => [
-                            'modo_escrita' => 'copiar',
-                            'imagem_modelo' => 'cao.png'
+                            'modo_escrita' => 'copiar'
                         ],
                         'resposta' => 'CÃO'
                     ],
+
                     [
                         'enunciado' => 'Traça o cão',
                         'tipo' => 'tracado',
-                        'dados' => [
-                            'imagem_tracejada' => 'cao_tracejado.png'
-                        ],
+                        'imagem' => 'cao_tracejado.png',
+                        'dados' => [],
                         'resposta' => 'CÃO'
                     ],
+
                     [
                         'enunciado' => 'Fala o nome do animal',
                         'tipo' => 'falar',
+                        'imagem' => 'cao.png',
                         'dados' => [
-                            'imagem' => 'cao.png',
                             'audio_texto' => 'Diz: cão'
                         ],
                         'resposta' => 'cão'
